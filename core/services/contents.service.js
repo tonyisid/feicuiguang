@@ -5,6 +5,7 @@ var logger = require('../../lib/logger.lib');
 var moment = require('moment');
 var categories = require('../models/categories.model');
 var contentsModel = require('../models/contents.model');
+var commentsModel = require('../models/comments.model');
 var mediaModel = require('../models/media.model');
 
 /**
@@ -82,10 +83,48 @@ exports.one = function (options, callback) {
           if (_.get(content, 'reading.createAt')) delete content.reading.createAt;
 
           callback(null, content);
+        },
+        function (content, callback) {
+          // 获取评论
+          var query = {
+            content : content._id
+          }
+          commentsModel.count(query, function(err, count){
+            if (err) {
+              err.type = 'database';
+              return callback(err)
+            }
+            if (count) {
+              content.commentsCount = count;
+              callback(null, content, query)
+            }else {
+              callback(null, content, query)
+            }
+          });
+        },
+        function (content, query, callback) {
+          //获取评论
+          var currentPage = 1;
+          var pageSize = 10;
+          commentsModel.find(query)
+            .sort('-date')
+            .skip((currentPage-1)*pageSize)
+            .limit(pageSize)
+            .populate('user')
+            .exec(function(err, comments){
+              if (err) {
+                return callback(err)
+              }
+              if (comments) {
+                content.comments = comments
+              }
+              callback(null, content)
+            })
         }
       ], callback);
     });
 };
+
 
 /**
  * 多条内容
