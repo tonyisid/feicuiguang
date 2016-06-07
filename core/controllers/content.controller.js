@@ -68,6 +68,7 @@ module.exports = function (req, res, next) {
         abstract: content.abstract,
         content: content.content,
         tags: content.tags,
+        comments: content.comments,
         extensions: content.extensions
       });
     });

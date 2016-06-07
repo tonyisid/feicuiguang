@@ -14,5 +14,3 @@ logs
 !logs/*/*.gitkeep
 public/media
 !public/media/.gitkeep
-public/themes
-!public/themes/default

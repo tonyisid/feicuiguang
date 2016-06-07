@@ -25,6 +25,19 @@
           标签：{{#foreach tags}}<span>{{this}}</span> {{/foreach}}
         </div>
       {{/if}}
+      {{#if comments}}
+        <div>
+          {{#foreach comments}}
+            <div>
+              comment
+            </div>
+          {{/foreach}}
+        </div>
+      {{/if}}
+      <div>
+        <textarea class="form-control"></textarea>
+        <button class="btn btn-default" type="submit">提交评论</button>
+      </div>
     </div>
     <div class="col-md-3 hidden-xs hidden-sm">
       <div class="panel panel-default">
