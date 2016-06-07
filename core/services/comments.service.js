@@ -4,8 +4,6 @@ var marked = require('marked');
 var logger = require('../../lib/logger.lib');
 var moment = require('moment');
 var categories = require('../models/categories.model');
-var contentsModel = require('../models/contents.model');
-var mediaModel = require('../models/media.model');
 var commentsModel = require('../models/comments.model')
 
 /**
@@ -80,7 +78,7 @@ exports.list = function (options, callback) {
       });
     },
     function (count, callback) {
-      contentsModel.find(query)
+      commentsModel.find(query)
         .sort('-date')
         .skip((currentPage - 1) * pageSize)
         .limit(pageSize)
@@ -157,7 +155,7 @@ exports.save = function (options, callback) {
       callback(err, oldContent);
     });
   } else {
-    new contentsModel(data).save(function (err, content) {
+    new commentsModel(data).save(function (err, content) {
       callback(err, content);
     });
   }
@@ -183,6 +181,8 @@ exports.remove = function (options, callback) {
   var ids = options.ids;
 
   if (ids) {
-    commentsModel.remove({$in : {_id : ids}})
+    commentsModel.remove({$in : {_id : ids}});
+  }else if (_id) {
+    commentsModel.remove({_id : _id});
   }
 };
