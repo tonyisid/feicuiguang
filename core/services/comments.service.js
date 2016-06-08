@@ -39,7 +39,7 @@ exports.one = function (options, callback) {
       if (!comment) return callback();
 
       callback(null, comment);
-    }
+    });
 };
 
 /**
@@ -57,7 +57,7 @@ exports.list = function (options, callback) {
   var currentPage = 1;
   var pageSize = 50;
 
-  if (options._id) query.content = options._id;
+  if (options.content) query.content = options.content;
   if (_.isBoolean(options.deleted)) query.deleted = options.deleted;
   if (options.currentPage) currentPage = parseInt(options.currentPage);
   if (options.pageSize) pageSize = parseInt(options.pageSize);

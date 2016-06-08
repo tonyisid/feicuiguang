@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var logger = require('../../lib/logger.lib');
-var commentService = require('../services/comment.service');
-var contentsModel = require('../models/content.model');
+var commentService = require('../services/comments.service');
+var contentsModel = require('../models/contents.model');
 var commentsModel = require('../models/comments.model');
 
 exports.create = function(req, res, next) {
@@ -50,7 +50,7 @@ exports.create = function(req, res, next) {
   })
 }
 
-exports.delete =  function (req, res, next) {
+exports.remove =  function (req, res, next) {
   req.checkParams({
     '_id' : {
       notEmpty: {
@@ -71,4 +71,26 @@ exports.delete =  function (req, res, next) {
     }
     res.status(204).end();
   })
+}
+exports.update = function (req, res, next) {
+    res.status(200).end();
+}
+
+exports.list = function (req, res, next) {
+  req.checkParams({
+    'content' : {
+      notEmpty : {
+        options : [true],
+        errorMessage: 'content 不能为空'
+      },
+      isMongoId: { errorMessage : 'content 需为 mongoID'}
+    }
+  });
+  if (req.validationErrors()){
+    logger.system().error(__filename, '参数验证失败', req.validationErrors());
+    return res.status(400).end();
+  }
+  commentService.list({}, function(err, result){
+    res.status(200).json(result)
+  });
 }

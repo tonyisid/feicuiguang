@@ -94,11 +94,10 @@ module.exports = {
     },
     // 评论
     '/comments': {
-      '/:content': {
-        get: [100500, 'comments.list'],
-        put: [100501, 'comments.update'],
-        delete: [100501, 'comments.remove']
-      }
+      get: [100500, 'comments.list'],
+      put: [100501, 'comments.update'],
+      put: [100501, 'comments.create'],
+      delete: [100501, 'comments.remove']
     },
     //单页
     '/pages/:page': {
